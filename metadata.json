@@ -1,0 +1,6 @@
+{
+  "name": "Chhath Puja Geet",
+  "description": "Cinematic Chhath Puja Geet single-page music player and interactive spiritual experience with morning/evening themes, flying birds, and sacred bhajans.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
