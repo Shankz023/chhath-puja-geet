@@ -129,8 +129,8 @@ export const App: React.FC = () => {
       {/* ========================================================================= */}
       {/* NAVIGATION BAR                                                            */}
       {/* ========================================================================= */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4 bg-black/50 backdrop-blur-xl border-b border-amber-500/20">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <header className="fixed top-0 left-0 right-0 z-50 px-2 md:px-8 py-4 bg-black/50 backdrop-blur-xl border-b border-amber-500/20">
+        <div className="max-w-8xl mx-auto flex items-center justify-between gap-2">
           {/* Brand Logo & Title */}
           <div 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -150,7 +150,7 @@ export const App: React.FC = () => {
           </div>
 
           {/* Center: Morning / Evening Mode Switcher Toggle */}
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-1 md:gap-4 scale-30 origin-left">
             <MorningEveningToggle mode={mode} onToggle={(newMode) => setMode(newMode)} />
           </div>
 
