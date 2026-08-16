@@ -39,16 +39,16 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
   mode,
 }) => {
   return (
-    <div className="relative w-full min-h-[80vh] flex flex-col justify-center items-center px-4 md:px-8 pt-24 pb-16 z-20">
+    <div className="relative w-full min-h-[80vh] flex flex-col justify-center items-center px-4 md:px-8 pt-24 pb-16 z-20 p-10">
       {/* Devotional Subtitle Badge */}
-      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300 text-xs md:text-sm font-semibold uppercase tracking-widest backdrop-blur-md shadow-lg shadow-amber-500/10 mb-6">
+      <div className="bann inline-flex items-center gap-2 px-4 mt-10 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300 text-xs md:text-sm font-semibold uppercase tracking-widest backdrop-blur-md shadow-lg shadow-amber-500/10 mb-6" sx={{padding: '100px 50px'}}>
         <Sun className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: '24s' }} />
         <span>आस्था, पवित्रता व सूर्य उपासना का महापर्व</span>
         <Sparkles className="w-3.5 h-3.5 text-amber-300" />
       </div>
 
       {/* Main Big Title */}
-      <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black font-devanagari text-center tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-200 to-orange-400 drop-shadow-[0_4px_24px_rgba(245,158,11,0.4)]">
+      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-devanagari text-center tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-200 to-orange-400 drop-shadow-[0_4px_24px_rgba(245,158,11,0.4)]">
         छठ पूजा गीत
       </h1>
       <p className="text-sm sm:text-lg md:text-xl font-cinzel text-amber-200/90 tracking-[0.25em] uppercase font-semibold text-center mt-3 drop-shadow">

@@ -63,26 +63,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const playerRef = useRef<any>(null);
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const isDraggingRef = useRef<boolean>(false);
-
-  // Send postMessage command to the iframe as direct fallback
-  const sendIframeCommand = (func: string, args: any[] = []) => {
-    try {
-      if (iframeRef.current && iframeRef.current.contentWindow) {
-        iframeRef.current.contentWindow.postMessage(
-          JSON.stringify({
-            event: 'command',
-            func: func,
-            args: args,
-          }),
-          '*'
-        );
-      }
-    } catch (e) {
-      console.warn('Could not postMessage to YouTube iframe', e);
-    }
-  };
 
   // Initialize YouTube Iframe Player API
   useEffect(() => {
@@ -180,11 +161,6 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
       } catch (err) {
         console.warn('Error loading video on song change', err);
       }
-    } else {
-      sendIframeCommand('loadVideoById', [currentSong.youtubeId]);
-      if (isPlaying) {
-        sendIframeCommand('playVideo', []);
-      }
     }
   }, [currentSongIndex]);
 
@@ -204,11 +180,6 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
       } catch (err) {
         console.warn('Error toggling play/pause in YT player', err);
       }
-    }
-    if (isPlaying) {
-      sendIframeCommand('playVideo', []);
-    } else {
-      sendIframeCommand('pauseVideo', []);
     }
   }, [isPlaying]);
 
@@ -253,7 +224,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     const targetSeconds = parseFloat(e.target.value);
     setCurrentTime(targetSeconds);
     
-    // Perform real-time seeking on the actual YouTube video
+    // Perform real-time seeking on the YouTube video
     if (playerRef.current && playerRef.current.seekTo) {
       try {
         playerRef.current.seekTo(targetSeconds, true);
@@ -261,7 +232,6 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         console.warn('Seek error:', err);
       }
     }
-    sendIframeCommand('seekTo', [targetSeconds, true]);
   };
 
   const handleSeekMouseDown = () => {
@@ -283,10 +253,6 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
       } catch (err) {
         console.warn('Seek error on release:', err);
       }
-    }
-    sendIframeCommand('seekTo', [targetSeconds, true]);
-    if (isPlaying) {
-      sendIframeCommand('playVideo', []);
     }
   };
 
@@ -315,7 +281,6 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         playerRef.current.setVolume(val);
       } catch (e) {}
     }
-    sendIframeCommand('setVolume', [val]);
   };
 
   const toggleMute = () => {
@@ -326,7 +291,6 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         playerRef.current.setVolume(nextMute ? 0 : volume);
       } catch (e) {}
     }
-    sendIframeCommand('setVolume', [nextMute ? 0 : volume]);
   };
 
   const formatTime = (secs: number) => {
@@ -338,17 +302,9 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   return (
     <>
-      {/* Invisible YouTube Audio Engine (Zero Video UI, Pure Audio) */}
+      {/* Invisible Single YouTube Audio Engine (Zero Video UI, Pure Audio) */}
       <div className="fixed -bottom-96 -right-96 w-10 h-10 opacity-0 pointer-events-none" aria-hidden="true">
         <div id="youtube-audio-player-element" />
-        <iframe
-          ref={iframeRef}
-          key={`iframe-${currentSong.youtubeId}`}
-          src={`https://www.youtube-nocookie.com/embed/${currentSong.youtubeId}?enablejsapi=1&autoplay=${isPlaying ? 1 : 0}&controls=0&rel=0`}
-          title={currentSong.title}
-          allow="autoplay; encrypted-media"
-          className="w-1 h-1"
-        />
       </div>
 
       {/* Main Glassmorphic Pure Audio Player Dock (Bottom Fixed) */}
