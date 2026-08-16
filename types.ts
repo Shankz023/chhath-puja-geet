@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-export type ThemeMode = 'morning' | 'evening';
+export type ThemeMode = 'morning' | 'evening' | 'kharna';
 
 export interface LyricLine {
   time?: number; // optional timestamp in seconds
