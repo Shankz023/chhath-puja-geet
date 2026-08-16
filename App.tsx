@@ -40,7 +40,7 @@ import VirtualArghya from './components/VirtualArghya';
 import MorningEveningToggle from './components/MorningEveningToggle';
 
 export const App: React.FC = () => {
-  const [mode, setMode] = useState<ThemeMode>('morning');
+  const [mode, setMode] = useState<ThemeMode>('evening');
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [showArghyaModal, setShowArghyaModal] = useState<boolean>(false);

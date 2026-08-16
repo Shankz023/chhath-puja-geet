@@ -23,6 +23,9 @@ export const AudioAtmosphere: React.FC<AudioAtmosphereProps> = ({ mode }) => {
   const waterNodeRef = useRef<{ source: AudioNode; gain: GainNode } | null>(null);
   const mantraIntervalRef = useRef<number | null>(null);
 
+  let sankhAudio = new Audio("/src/assets/sounds/sankhSound.mp3");
+  let splashWaterEffect = new Audio("/src/assets/sounds/splashWaterEffect.mp3");
+
   // Initialize or resume AudioContext
   const getAudioContext = () => {
     if (!audioCtxRef.current) {
@@ -84,105 +87,29 @@ export const AudioAtmosphere: React.FC<AudioAtmosphereProps> = ({ mode }) => {
 
   // Play divine Shankh (Conch) Naad with deep brassy swell
   const blowShankh = () => {
-    const ctx = getAudioContext();
-    if (!ctx) return;
 
     setIsShankhBlowing(true);
+    sankhAudio.currentTime = 0;
+    sankhAudio.play();
     setTimeout(() => setIsShankhBlowing(false), 3800);
 
-    const now = ctx.currentTime;
-    const duration = 3.5;
-
-    const osc1 = ctx.createOscillator();
-    const osc2 = ctx.createOscillator();
-    const filter = ctx.createBiquadFilter();
-    const gain = ctx.createGain();
-
-    // Sacred Shankh fundamental pitch around 174Hz (F3) bending up gently to 196Hz (G3)
-    osc1.type = 'sawtooth';
-    osc1.frequency.setValueAtTime(174, now);
-    osc1.frequency.linearRampToValueAtTime(196, now + 0.8);
-    osc1.frequency.linearRampToValueAtTime(185, now + duration - 0.5);
-
-    osc2.type = 'triangle';
-    osc2.frequency.setValueAtTime(348, now);
-    osc2.frequency.linearRampToValueAtTime(392, now + 0.8);
-    osc2.frequency.linearRampToValueAtTime(370, now + duration - 0.5);
-
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(450, now);
-    filter.frequency.linearRampToValueAtTime(1100, now + 0.6);
-    filter.frequency.linearRampToValueAtTime(600, now + duration);
-
-    // Natural breath envelope
-    gain.gain.setValueAtTime(0.001, now);
-    gain.gain.linearRampToValueAtTime(0.35, now + 0.7);
-    gain.gain.setValueAtTime(0.32, now + duration - 0.8);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-    osc1.connect(filter);
-    osc2.connect(filter);
-    filter.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc1.start(now);
-    osc2.start(now);
-    osc1.stop(now + duration + 0.1);
-    osc2.stop(now + duration + 0.1);
   };
 
   // Toggle holy river stream ambient noise generator
   const toggleWater = () => {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-
     if (isWaterActive) {
-      if (waterNodeRef.current) {
-        waterNodeRef.current.gain.gain.linearRampToValueAtTime(0.001, ctx.currentTime + 0.5);
-        setTimeout(() => {
-          setIsWaterActive(false);
-          waterNodeRef.current = null;
-        }, 500);
-      }
-    } else {
-      const bufferSize = 2 * ctx.sampleRate;
-      const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const output = noiseBuffer.getChannelData(0);
-      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-      for (let i = 0; i < bufferSize; i++) {
-        const white = Math.random() * 2 - 1;
-        b0 = 0.99886 * b0 + white * 0.0555179;
-        b1 = 0.99332 * b1 + white * 0.0750759;
-        b2 = 0.96900 * b2 + white * 0.1538520;
-        b3 = 0.86650 * b3 + white * 0.3104856;
-        b4 = 0.55000 * b4 + white * 0.5329522;
-        b5 = -0.7616 * b5 - white * 0.0168980;
-        output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-        output[i] *= 0.04;
-        b6 = white * 0.115926;
-      }
-
-      const whiteNoise = ctx.createBufferSource();
-      whiteNoise.buffer = noiseBuffer;
-      whiteNoise.loop = true;
-
-      // Filter to simulate river ghat water
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(600, ctx.currentTime);
-
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.001, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(waterVolume * 0.6, ctx.currentTime + 0.8);
-
-      whiteNoise.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-
-      whiteNoise.start();
-      waterNodeRef.current = { source: whiteNoise, gain };
-      setIsWaterActive(true);
+      splashWaterEffect.pause();
+      return;
     }
+    setIsWaterActive((prev) => !prev);
+    if (!isWaterActive) {
+      splashWaterEffect.currentTime = 0;
+      splashWaterEffect.play();
+    }
+    setTimeout(() => {
+      setIsWaterActive(false);
+       splashWaterEffect.pause();
+    }, 6000);
   };
 
   // Adjust volume if water is playing
@@ -211,11 +138,10 @@ export const AudioAtmosphere: React.FC<AudioAtmosphereProps> = ({ mode }) => {
         id="btn-temple-bell"
         onClick={ringTempleBell}
         title="Ring Sacred Temple Bell (मंदिर घंटी नाद)"
-        className={`group relative flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-semibold tracking-wide transition-all duration-300 backdrop-blur-md cursor-pointer ${
-          isBellRinging
+        className={`group relative flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-semibold tracking-wide transition-all duration-300 backdrop-blur-md cursor-pointer ${isBellRinging
             ? 'bg-amber-500/30 border-amber-400 text-amber-200 scale-105 shadow-lg shadow-amber-500/20'
             : 'bg-black/30 hover:bg-black/50 border-white/20 hover:border-amber-400/60 text-amber-100/90'
-        }`}
+          }`}
       >
         <Bell className={`w-4 h-4 text-amber-400 ${isBellRinging ? 'animate-bounce' : 'group-hover:rotate-12'} transition-transform`} />
         <span>घंटी बजाएं (Bell)</span>
@@ -232,11 +158,10 @@ export const AudioAtmosphere: React.FC<AudioAtmosphereProps> = ({ mode }) => {
         id="btn-shankh-naad"
         onClick={blowShankh}
         title="Divine Shankh Naad (पवित्र शंख ध्वनि)"
-        className={`group relative flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-semibold tracking-wide transition-all duration-300 backdrop-blur-md cursor-pointer ${
-          isShankhBlowing
+        className={`group relative flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-semibold tracking-wide transition-all duration-300 backdrop-blur-md cursor-pointer ${isShankhBlowing
             ? 'bg-orange-500/30 border-orange-400 text-orange-200 scale-105 shadow-lg shadow-orange-500/20'
             : 'bg-black/30 hover:bg-black/50 border-white/20 hover:border-orange-400/60 text-orange-100/90'
-        }`}
+          }`}
       >
         <Wind className={`w-4 h-4 text-orange-400 ${isShankhBlowing ? 'animate-pulse' : 'group-hover:scale-110'} transition-transform`} />
         <span>शंख नाद (Shankh)</span>
@@ -253,11 +178,10 @@ export const AudioAtmosphere: React.FC<AudioAtmosphereProps> = ({ mode }) => {
         id="btn-river-ambient"
         onClick={toggleWater}
         title="Holy River Ganga Ambient Flow (गंगा जल धारा)"
-        className={`flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-semibold tracking-wide transition-all duration-300 backdrop-blur-md cursor-pointer ${
-          isWaterActive
+        className={`flex items-center gap-2 px-3.5 py-2 rounded-full border text-xs font-semibold tracking-wide transition-all duration-300 backdrop-blur-md cursor-pointer ${isWaterActive
             ? 'bg-cyan-500/30 border-cyan-400 text-cyan-200 shadow-lg shadow-cyan-500/20'
             : 'bg-black/30 hover:bg-black/50 border-white/20 hover:border-cyan-400/60 text-cyan-100/90'
-        }`}
+          }`}
       >
         <Waves className={`w-4 h-4 text-cyan-300 ${isWaterActive ? 'animate-pulse' : ''}`} />
         <span>गंगा धारा ({isWaterActive ? 'ON' : 'OFF'})</span>
