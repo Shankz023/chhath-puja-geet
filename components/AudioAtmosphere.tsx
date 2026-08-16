@@ -23,8 +23,8 @@ export const AudioAtmosphere: React.FC<AudioAtmosphereProps> = ({ mode }) => {
   const waterNodeRef = useRef<{ source: AudioNode; gain: GainNode } | null>(null);
   const mantraIntervalRef = useRef<number | null>(null);
 
-  let sankhAudio = new Audio("/src/assets/sounds/sankhSound.mp3");
-  let splashWaterEffect = new Audio("/src/assets/sounds/splashWaterEffect.mp3");
+  let sankhAudio = new Audio("/src/assets/images/sankhSound.mp3");
+  let splashWaterEffect = new Audio("/src/assets/images/splashWaterEffect.mp3");
 
   // Initialize or resume AudioContext
   const getAudioContext = () => {
