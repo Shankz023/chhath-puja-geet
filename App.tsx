@@ -134,13 +134,13 @@ export const App: React.FC = () => {
           {/* Brand Logo & Title */}
           <div 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-2 cursor-pointer group"
           >
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-stone-950 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
               <Sun className="w-6 h-6 animate-spin" style={{ animationDuration: '20s' }} />
             </div>
             <div>
-              <span className="font-bold text-base md:text-lg text-amber-100 font-devanagari tracking-tight group-hover:text-amber-300 transition-colors">
+              <span className="hidden font-bold text-base md:text-lg text-amber-100 font-devanagari tracking-tight group-hover:text-amber-300 transition-colors">
                 छठ पूजा गीत
               </span>
               <span className="hidden sm:block text-[10px] font-cinzel text-amber-300/70 tracking-widest uppercase">
@@ -150,7 +150,7 @@ export const App: React.FC = () => {
           </div>
 
           {/* Center: Morning / Evening Mode Switcher Toggle */}
-          <div className="flex items-center gap-1 md:gap-4 scale-30 origin-left">
+          <div className="flex items-center gap-1 md:gap-4 origin-left">
             <MorningEveningToggle mode={mode} onToggle={(newMode) => setMode(newMode)} />
           </div>
 
