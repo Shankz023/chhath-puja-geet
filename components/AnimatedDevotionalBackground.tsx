@@ -18,8 +18,8 @@ export const AnimatedDevotionalBackground: React.FC<AnimatedDevotionalBackground
 }) => {
   // Determine active background image based on song and mode
   const activeBackground = mode === 'morning'
-    ? (currentSong.morningBackground || currentSong.coverImage)
-    : (currentSong.eveningBackground || currentSong.coverImage);
+    ? (currentSong.morningBackground || currentSong.coverImage) : ( mode === 'kharna' ? (currentSong.coverImage)
+    : (currentSong.eveningBackground || currentSong.coverImage));
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">

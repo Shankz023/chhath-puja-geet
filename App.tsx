@@ -40,7 +40,7 @@ import VirtualArghya from './components/VirtualArghya';
 import MorningEveningToggle from './components/MorningEveningToggle';
 
 export const App: React.FC = () => {
-  const [mode, setMode] = useState<ThemeMode>('evening');
+  const [mode, setMode] = useState<ThemeMode>('kharna');
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [showArghyaModal, setShowArghyaModal] = useState<boolean>(false);
@@ -324,7 +324,8 @@ export const App: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {CHHATH_SONGS.map((song, idx) => {
               const isCurrent = idx === currentSongIndex;
-              return (
+              if(mode ==='evening' && song.tag === 'Evening Arghya') {
+                return (
                 <div
                   key={song.id}
                   id={`song-card-${song.id}`}
@@ -424,6 +425,211 @@ export const App: React.FC = () => {
                   </div>
                 </div>
               );
+              }
+              if(mode ==='morning' && song.tag === 'Morning Arghya') {
+                return (
+                <div
+                  key={song.id}
+                  id={`song-card-${song.id}`}
+                  onClick={() => handleSelectSong(idx)}
+                  className={`group relative rounded-3xl overflow-hidden border p-5 transition-all duration-300 cursor-pointer backdrop-blur-xl flex flex-col justify-between ${
+                    isCurrent
+                      ? 'bg-gradient-to-b from-amber-500/30 via-orange-500/20 to-black/90 border-amber-400 shadow-2xl shadow-amber-500/25 scale-[1.02] ring-2 ring-amber-400/40'
+                      : 'bg-black/40 hover:bg-black/60 border-white/10 hover:border-amber-500/50 hover:-translate-y-1 hover:shadow-xl'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-start gap-4 mb-3">
+                      <div className="relative w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 border border-amber-400/40 shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        <img
+                          src={song.coverImage}
+                          alt={song.title}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover"
+                        />
+                        {isCurrent ? (
+                          <div className="absolute inset-0 bg-amber-500/40 backdrop-blur-[1px] flex items-center justify-center">
+                            {isPlaying ? (
+                              <div className="flex items-center gap-0.5">
+                                <span className="w-1.5 h-4 bg-white rounded-full animate-bounce" />
+                                <span className="w-1.5 h-6 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                                <span className="w-1.5 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+                              </div>
+                            ) : (
+                              <Play className="w-6 h-6 text-white fill-white" />
+                            )}
+                          </div>
+                        ) : (
+                          <div className="absolute inset-0 bg-black/30 group-hover:bg-amber-500/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <Play className="w-6 h-6 text-amber-300 fill-amber-300" />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400 font-cinzel">
+                          {song.tag}
+                        </span>
+                        <h3 className="font-bold text-base text-amber-100 font-devanagari line-clamp-1 group-hover:text-amber-300 transition-colors mt-0.5">
+                          {song.hindiTitle}
+                        </h3>
+                        <p className="text-xs text-stone-300 font-medium truncate mt-0.5">
+                          {song.singer}
+                        </p>
+                        <span className="text-[11px] font-mono text-stone-400">
+                          {song.duration}
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-stone-300/80 line-clamp-2 leading-relaxed mb-4">
+                      {song.description}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-3 border-t border-white/10 text-xs gap-2">
+                    <a
+                      href={song.youtubeUrl || `https://www.youtube.com/watch?v=${song.youtubeId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-red-400 hover:text-red-300 font-semibold text-[11px] flex items-center gap-1 bg-red-950/40 hover:bg-red-900/60 px-2.5 py-1 rounded-md border border-red-500/30 transition-colors"
+                      title="Open and listen directly on YouTube"
+                    >
+                      <ExternalLink className="w-3 h-3 text-red-400" />
+                      <span>YouTube</span>
+                    </a>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePlaySong(idx);
+                      }}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                        isCurrent
+                          ? isPlaying
+                            ? 'bg-amber-400 text-stone-950 shadow-md ring-2 ring-amber-300'
+                            : 'bg-amber-500/80 text-stone-950'
+                          : 'bg-white/10 group-hover:bg-amber-500/30 text-white group-hover:text-amber-200'
+                      }`}
+                    >
+                      {isCurrent && isPlaying ? (
+                        <>
+                          <Pause className="w-3.5 h-3.5 fill-stone-950" />
+                          <span>Playing</span>
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-3.5 h-3.5 fill-current" />
+                          <span>{isCurrent ? 'Resume' : 'Play Song'}</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+              }
+              if(mode ==='kharna' && song.tag === 'Kharna') {
+                return (
+                <div
+                  key={song.id}
+                  id={`song-card-${song.id}`}
+                  onClick={() => handleSelectSong(idx)}
+                  className={`group relative rounded-3xl overflow-hidden border p-5 transition-all duration-300 cursor-pointer backdrop-blur-xl flex flex-col justify-between ${
+                    isCurrent
+                      ? 'bg-gradient-to-b from-amber-500/30 via-orange-500/20 to-black/90 border-amber-400 shadow-2xl shadow-amber-500/25 scale-[1.02] ring-2 ring-amber-400/40'
+                      : 'bg-black/40 hover:bg-black/60 border-white/10 hover:border-amber-500/50 hover:-translate-y-1 hover:shadow-xl'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-start gap-4 mb-3">
+                      <div className="relative w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 border border-amber-400/40 shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        <img
+                          src={song.coverImage}
+                          alt={song.title}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover"
+                        />
+                        {isCurrent ? (
+                          <div className="absolute inset-0 bg-amber-500/40 backdrop-blur-[1px] flex items-center justify-center">
+                            {isPlaying ? (
+                              <div className="flex items-center gap-0.5">
+                                <span className="w-1.5 h-4 bg-white rounded-full animate-bounce" />
+                                <span className="w-1.5 h-6 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                                <span className="w-1.5 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+                              </div>
+                            ) : (
+                              <Play className="w-6 h-6 text-white fill-white" />
+                            )}
+                          </div>
+                        ) : (
+                          <div className="absolute inset-0 bg-black/30 group-hover:bg-amber-500/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <Play className="w-6 h-6 text-amber-300 fill-amber-300" />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400 font-cinzel">
+                          {song.tag}
+                        </span>
+                        <h3 className="font-bold text-base text-amber-100 font-devanagari line-clamp-1 group-hover:text-amber-300 transition-colors mt-0.5">
+                          {song.hindiTitle}
+                        </h3>
+                        <p className="text-xs text-stone-300 font-medium truncate mt-0.5">
+                          {song.singer}
+                        </p>
+                        <span className="text-[11px] font-mono text-stone-400">
+                          {song.duration}
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-stone-300/80 line-clamp-2 leading-relaxed mb-4">
+                      {song.description}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-3 border-t border-white/10 text-xs gap-2">
+                    <a
+                      href={song.youtubeUrl || `https://www.youtube.com/watch?v=${song.youtubeId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-red-400 hover:text-red-300 font-semibold text-[11px] flex items-center gap-1 bg-red-950/40 hover:bg-red-900/60 px-2.5 py-1 rounded-md border border-red-500/30 transition-colors"
+                      title="Open and listen directly on YouTube"
+                    >
+                      <ExternalLink className="w-3 h-3 text-red-400" />
+                      <span>YouTube</span>
+                    </a>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePlaySong(idx);
+                      }}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                        isCurrent
+                          ? isPlaying
+                            ? 'bg-amber-400 text-stone-950 shadow-md ring-2 ring-amber-300'
+                            : 'bg-amber-500/80 text-stone-950'
+                          : 'bg-white/10 group-hover:bg-amber-500/30 text-white group-hover:text-amber-200'
+                      }`}
+                    >
+                      {isCurrent && isPlaying ? (
+                        <>
+                          <Pause className="w-3.5 h-3.5 fill-stone-950" />
+                          <span>Playing</span>
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-3.5 h-3.5 fill-current" />
+                          <span>{isCurrent ? 'Resume' : 'Play Song'}</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+              }
             })}
           </div>
         </section>
