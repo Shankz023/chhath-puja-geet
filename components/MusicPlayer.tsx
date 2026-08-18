@@ -162,7 +162,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         console.warn('Error loading video on song change', err);
       }
     }
-  }, [currentSongIndex]);
+  }, [currentSongIndex, mode]);
 
   // When isPlaying changes, trigger play/pause on player
   useEffect(() => {

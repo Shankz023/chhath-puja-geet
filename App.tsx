@@ -45,8 +45,9 @@ export const App: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [showArghyaModal, setShowArghyaModal] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [filteredSongs, setFilteredSongs] = useState<Song[]>(CHHATH_SONGS.filter(song => song.tag === 'Kharna'));
 
-  const [currentSong, setCurrentSong] = useState<Song>(CHHATH_SONGS[currentSongIndex] || CHHATH_SONGS[0]);
+  const [currentSong, setCurrentSong] = useState<Song>(filteredSongs[currentSongIndex] || filteredSongs[0]);
 
   // Play a specific song by index
   const handlePlaySong = (index: number) => {
@@ -58,10 +59,12 @@ export const App: React.FC = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(()=> {
+    setIsPlaying(false);
     const filteredSongs = CHHATH_SONGS.filter(song => song.tag === (mode === 'morning' ? 'Morning Arghya' : mode === 'evening' ? 'Evening Arghya' : 'Kharna'));
-    setCurrentSong(filteredSongs[0]);
-  },[mode]);
+    setFilteredSongs(filteredSongs);
+    setCurrentSong(filteredSongs[currentSongIndex] || filteredSongs[0]);
+  }, [mode]);
 
   // Select a song and start playback immediately
   const handleSelectSong = (index: number) => {
@@ -71,12 +74,12 @@ export const App: React.FC = () => {
 
   // Next and Previous Song Traversing Functions
   const handleNextSong = () => {
-    setCurrentSongIndex((prev) => (prev + 1) % CHHATH_SONGS.length);
+    setCurrentSongIndex((prev) => (prev + 1) % filteredSongs.length);
     setIsPlaying(true);
   };
 
   const handlePrevSong = () => {
-    setCurrentSongIndex((prev) => (prev - 1 + CHHATH_SONGS.length) % CHHATH_SONGS.length);
+    setCurrentSongIndex((prev) => (prev - 1 + filteredSongs.length) % filteredSongs.length);
     setIsPlaying(true);
   };
 
@@ -317,7 +320,7 @@ export const App: React.FC = () => {
 
           {/* Grid of Individual Song Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {CHHATH_SONGS.map((song, idx) => {
+            {filteredSongs.map((song, idx) => {
              
               if(mode ==='evening' && song.tag === 'Evening Arghya') {
                  const isCurrent = idx === currentSongIndex;
@@ -673,7 +676,7 @@ export const App: React.FC = () => {
       {/* FIXED BOTTOM MUSIC PLAYER BAR                                             */}
       {/* ========================================================================= */}
       <MusicPlayer
-        songs={CHHATH_SONGS}
+        songs={filteredSongs}
         currentSongIndex={currentSongIndex}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
