@@ -376,7 +376,7 @@ export const FloatingDiyas: React.FC<FloatingDiyasProps> = ({ mode }) => {
       )}
 
       {/* Floating Action Pill on the bottom-right */}
-      <div className="fixed bottom-24 md:bottom-28 right-4 md:right-8 z-30 flex flex-col items-end gap-2">
+      <div className="fixed bottom-28 md:bottom-28 right-4 md:right-8 z-30 flex flex-col items-end gap-2">
         {justOffered && (
           <div className="bg-amber-950/90 border border-amber-400 text-amber-200 px-4 py-2 rounded-xl text-xs shadow-xl animate-bounce">
             ✨ आपका दीप गंगा की पावन धारा में प्रवाहित हो गया है! जय छठी मईया!
@@ -385,7 +385,7 @@ export const FloatingDiyas: React.FC<FloatingDiyasProps> = ({ mode }) => {
         <button
           id="btn-offer-diya-cta"
           onClick={() => setShowOfferModal(true)}
-          className="group flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-amber-600/90 via-orange-600/90 to-red-600/90 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-bold uppercase tracking-widest shadow-xl shadow-orange-950/50 border border-amber-400/50 backdrop-blur-md transition-all duration-300 hover:scale-105 cursor-pointer"
+          className="group flex items-center gap-2 px-4 py-3 rounded-full bg-gradient-to-r from-amber-600/90 via-orange-600/90 to-red-600/90 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-bold uppercase tracking-widest shadow-xl shadow-orange-950/50 border border-amber-400/50 backdrop-blur-md transition-all duration-300 hover:scale-105 cursor-pointer"
         >
           <Flame className="w-4 h-4 text-amber-300 group-hover:scale-125 transition-transform" />
           <span>दीपदान करें (Offer Diya)</span>

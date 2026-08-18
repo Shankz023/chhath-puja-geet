@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import { ThemeMode, Song } from '../types';
 import { FlyingBirds } from './FlyingBirds';
+import chhathMobile from '/src/assets/images/chhathMobile.png';
 
 interface AnimatedDevotionalBackgroundProps {
   currentSong: Song;
@@ -16,10 +17,29 @@ export const AnimatedDevotionalBackground: React.FC<AnimatedDevotionalBackground
   currentSong,
   mode,
 }) => {
-  // Determine active background image based on song and mode
-  const activeBackground = mode === 'morning'
-    ? (currentSong.morningBackground || currentSong.coverImage) : ( mode === 'kharna' ? (currentSong.coverImage)
-    : (currentSong.eveningBackground || currentSong.coverImage));
+ const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // Detects screens narrower than 768px (common breakpoint)
+    };
+
+    // Check on initial render
+    checkMobile();
+
+    // Re-check on window resize
+    window.addEventListener('resize', checkMobile);
+
+    // Clean up listener on component unmount
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const activeBackground = isMobile && chhathMobile
+    ? chhathMobile // If mobile, use the specific mobile cover
+    : (mode === 'morning'
+        ? (currentSong.morningBackground)
+        : (mode === 'kharna' ? (currentSong.coverImage)
+        : (currentSong.eveningBackground)));
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
@@ -95,12 +115,11 @@ export const AnimatedDevotionalBackground: React.FC<AnimatedDevotionalBackground
       </div>
 
       {/* Sun / Aura Glow at the top */}
-      <div 
-        className={`sun-ray-aura absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full pointer-events-none blur-3xl ${
-          mode === 'morning'
+      <div
+        className={`sun-ray-aura absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full pointer-events-none blur-3xl ${mode === 'morning'
             ? 'bg-gradient-to-tr from-amber-500/25 via-orange-400/20 to-yellow-300/15'
             : 'bg-gradient-to-tr from-orange-600/30 via-rose-500/20 to-amber-400/15'
-        }`}
+          }`}
       />
 
       {/* Flying Birds Flock Animation Layer */}
@@ -125,7 +144,7 @@ export const AnimatedDevotionalBackground: React.FC<AnimatedDevotionalBackground
               animationDuration: petal.dur,
             }}
           >
-            <div 
+            <div
               className="rounded-full bg-gradient-to-br from-amber-400 to-orange-500 shadow-sm opacity-80"
               style={{
                 width: `${petal.size}px`,

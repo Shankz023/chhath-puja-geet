@@ -382,7 +382,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
                     href={currentSong.youtubeUrl || `https://www.youtube.com/watch?v=${currentSong.youtubeId}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[10px] text-red-400 hover:text-red-300 font-bold transition-colors"
+                    className="hidden inline-flex items-center gap-1 text-[10px] text-red-400 hover:text-red-300 font-bold transition-colors"
                     title="Open directly on YouTube"
                   >
                     <ExternalLink className="w-2.5 h-2.5" />
@@ -464,7 +464,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
               {/* Tanpura Drone Ambient Toggle */}
               <button
                 onClick={toggleAmbientDrone}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold tracking-wider transition-colors ${
+                className={`hidden flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold tracking-wider transition-colors ${
                   ambientDrone
                     ? 'bg-orange-500/30 border-orange-400 text-orange-200 shadow-md shadow-orange-500/20'
                     : 'bg-black/40 hover:bg-black/60 border-white/15 text-white/70 hover:text-white'
@@ -476,7 +476,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
               </button>
 
               {/* Volume Slider */}
-              <div className="hidden lg:flex items-center gap-2">
+              <div className="md:flex items-center gap-2">
                 <button 
                   onClick={toggleMute} 
                   className="text-white/60 hover:text-white p-1"
@@ -502,7 +502,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
               <button
                 id="btn-open-playlist"
                 onClick={() => setShowPlaylist(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
+                className="hidden flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
                 title="Browse Bhajan Playlist"
               >
                 <ListMusic className="w-4 h-4" />

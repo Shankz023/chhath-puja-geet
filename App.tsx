@@ -46,7 +46,7 @@ export const App: React.FC = () => {
   const [showArghyaModal, setShowArghyaModal] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
-  const currentSong: Song = CHHATH_SONGS[currentSongIndex] || CHHATH_SONGS[0];
+  const [currentSong, setCurrentSong] = useState<Song>(CHHATH_SONGS[currentSongIndex] || CHHATH_SONGS[0]);
 
   // Play a specific song by index
   const handlePlaySong = (index: number) => {
@@ -57,6 +57,11 @@ export const App: React.FC = () => {
       setIsPlaying(true);
     }
   };
+
+  useEffect(()=>{
+    const filteredSongs = CHHATH_SONGS.filter(song => song.tag === (mode === 'morning' ? 'Morning Arghya' : mode === 'evening' ? 'Evening Arghya' : 'Kharna'));
+    setCurrentSong(filteredSongs[0]);
+  },[mode]);
 
   // Select a song and start playback immediately
   const handleSelectSong = (index: number) => {
@@ -98,6 +103,7 @@ export const App: React.FC = () => {
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
+    const headerOffset = 90;
     const element = document.getElementById(id);
     if (element) {
       const headerOffset = 90;
@@ -137,7 +143,7 @@ export const App: React.FC = () => {
             className="flex items-center gap-2 cursor-pointer group"
           >
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-stone-950 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-              <Sun className="w-6 h-6 animate-spin" style={{ animationDuration: '20s' }} />
+              <Sun onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="w-6 h-6 animate-spin" style={{ animationDuration: '20s' }} />
             </div>
             <div>
               <span className="hidden font-bold text-base md:text-lg text-amber-100 font-devanagari tracking-tight group-hover:text-amber-300 transition-colors">
@@ -188,17 +194,6 @@ export const App: React.FC = () => {
             >
               <Flame className="w-4 h-4 fill-stone-950" />
               <span>अर्घ्य दर्शन</span>
-            </button>
-          </div>
-
-          {/* Mobile Menu Toggle Button */}
-          <div className="flex lg:hidden items-center gap-2">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-amber-200 hover:text-white bg-black/40 border border-white/10 rounded-xl"
-              aria-label="Toggle Navigation Menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -284,7 +279,7 @@ export const App: React.FC = () => {
         {/* ========================================================================= */}
         {/* SECTION: ALL SONGS PLAYLIST GRID                                          */}
         {/* ========================================================================= */}
-        <section id="section-songs" className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+        <section id="section-songs" className="scroll-mt-24 max-w-7xl mx-auto px-4 md:px-8 py-12">
           <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 mb-8">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-semibold uppercase tracking-wider mb-2">
@@ -323,8 +318,9 @@ export const App: React.FC = () => {
           {/* Grid of Individual Song Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {CHHATH_SONGS.map((song, idx) => {
-              const isCurrent = idx === currentSongIndex;
+             
               if(mode ==='evening' && song.tag === 'Evening Arghya') {
+                 const isCurrent = idx === currentSongIndex;
                 return (
                 <div
                   key={song.id}
@@ -427,6 +423,7 @@ export const App: React.FC = () => {
               );
               }
               if(mode ==='morning' && song.tag === 'Morning Arghya') {
+                 const isCurrent = idx === currentSongIndex;
                 return (
                 <div
                   key={song.id}
@@ -529,6 +526,7 @@ export const App: React.FC = () => {
               );
               }
               if(mode ==='kharna' && song.tag === 'Kharna') {
+                 const isCurrent = idx === currentSongIndex;
                 return (
                 <div
                   key={song.id}
@@ -637,14 +635,14 @@ export const App: React.FC = () => {
         {/* ========================================================================= */}
         {/* SECTION: LYRICS VIEWER & SPIRITUAL MEANINGS                                */}
         {/* ========================================================================= */}
-        <section id="section-lyrics" className="max-w-6xl mx-auto px-4 md:px-8 py-10">
+        <section id="section-lyrics" className="scroll-mt-24 max-w-6xl mx-auto px-4 md:px-8 py-10">
           <LyricsViewer song={currentSong} />
         </section>
 
         {/* ========================================================================= */}
         {/* SECTION: 4-DAY MAHARITUALS GUIDE & TRADITIONS                             */}
         {/* ========================================================================= */}
-        <section id="section-rituals" className="px-4 md:px-8 py-6">
+        <section id="section-rituals" className="scroll-mt-24 px-4 md:px-8 py-6">
           <RitualsGuide mode={mode} />
         </section>
 
