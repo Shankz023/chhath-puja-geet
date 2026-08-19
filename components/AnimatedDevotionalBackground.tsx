@@ -101,7 +101,7 @@ export const AnimatedDevotionalBackground: React.FC<AnimatedDevotionalBackground
       {/* Dynamic Per-Song & Per-Mode Wallpaper with Crossfade Animation */}
       <div
         key={`${currentSong.id}-${mode}`}
-        className="absolute inset-0 bg-cover bg-center transition-all duration-1000 transform scale-105"
+        className="absolute inset-0 bg-cover transition-all duration-1000 transform scale-105"
         style={{
           backgroundImage: `url(${activeBackground})`,
         }}
