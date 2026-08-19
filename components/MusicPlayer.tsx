@@ -86,6 +86,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
               modestbranding: 1,
               rel: 0,
               origin: window.location.origin,
+              playsinline: 1
             },
             events: {
               onReady: (event: any) => {
@@ -144,7 +145,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         } catch (e) {}
       }
     };
-  }, []);
+  }, [currentSong]);
 
   // When currentSong changes, load new video and reset state
   useEffect(() => {

@@ -63,7 +63,10 @@ export const App: React.FC = () => {
     setIsPlaying(false);
     const filteredSongs = CHHATH_SONGS.filter(song => song.tag === (mode === 'morning' ? 'Morning Arghya' : mode === 'evening' ? 'Evening Arghya' : 'Kharna'));
     setFilteredSongs(filteredSongs);
-    setCurrentSong(filteredSongs[currentSongIndex] || filteredSongs[0]);
+    setCurrentSong(filteredSongs[0]);
+    console.log('Filtered Songs:', filteredSongs[0]);
+    console.log(currentSong);
+    setCurrentSongIndex(0);
   }, [mode]);
 
   // Select a song and start playback immediately
