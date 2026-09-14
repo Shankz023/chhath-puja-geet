@@ -15,6 +15,7 @@ import sunsetArghyaImg from '../assets/images/chhath_sunset_arghya_1786812886246
 import kosiRitualImg from '../assets/images/chhath_kosi_ritual_1786812897512.jpg';
 import sacredOfferingsImg from '../assets/images/chhath_sacred_offerings_1786812908473.jpg';
 import kharnaImg from '../assets/images/kharnaAnimated.jfif'
+import vvaanImg from '../assets/images/vvanChhath.jpg';
 
 export {
   morningWallpaper,
@@ -29,7 +30,7 @@ export {
 };
 
 export const CHHATH_SONGS: Song[] = [
-  
+
   // ============================================================
   // KHARNA
   // ============================================================
@@ -423,6 +424,62 @@ export const CHHATH_SONGS: Song[] = [
   // ============================================================
 
   {
+    id: 'chhathi-maiya-the-vvaan',
+    title: 'Chhathi Maiya - The VVAAN',
+    hindiTitle: 'छठी मैया',
+    singer: 'Vishal Mishra',
+    duration: '03:30',
+    durationSec: 210,
+    youtubeId: 'FCRb4kjnRx4',
+    youtubeUrl: 'https://www.youtube.com/watch?v=FCRb4kjnRx4',
+    coverImage: soopOfferingImg,
+    morningBackground: vvaanImg,
+    eveningBackground: vvaanImg,
+    tag: 'Evening Arghya',
+    ragaOrMood: 'Pure Traditional Folk / Purity & Devotion',
+    description: 'A deeply devotional Chhath prayer expressing complete surrender to Chhathi Maiya, asking for her grace, blessings, protection, and fulfillment of heartfelt wishes.',
+    lyrics: [
+      {
+        time: 17,
+        hindi: 'कोई दुःख जग में है ही नहीं, जो तेरी कृपा से मिट न जाए...',
+        transliteration: 'Koi dukh jag mein hai hi nahi, jo teri kripa se mit na jaaye...',
+        meaning: 'There is no sorrow in this world that cannot be removed by your divine grace.'
+      },
+      {
+        time: 35,
+        hindi: 'ऐसा वरदान है ही नहीं, जो छठी मैया से माँगे और मिल न जाए...',
+        transliteration: 'Aisa vardaan hai hi nahi, jo Chhathi Maiya se maange aur mil na jaaye...',
+        meaning: 'There is no blessing that a devotee asks of Mother Chhathi that remains ungranted.'
+      },
+      {
+        time: 72,
+        hindi: 'सारे जहान में तेरी है जय जय, तेरी है महिमा देती सुनाई...',
+        transliteration: 'Saare jahaan mein teri hai jai jai, teri hai mahima deti sunaai...',
+        meaning: 'Throughout the world, your glory and victory are celebrated, and your divine greatness is heard everywhere.'
+      },
+      {
+        time: 80,
+        hindi: 'तेरे बिना ना कोई मेरा, अब जाऊँ कहाँ मैं माई...',
+        transliteration: 'Tere bina na koi mera, ab jaaun kahaan main maai...',
+        meaning: 'Without you, Mother, I have no one of my own. Where else can I go?'
+      },
+      {
+        time: 86,
+        hindi: 'तू बस तू है सहारा, है सब कुछ मेरा... हाथ में तेरे है, सारा सुख दुख मेरा...',
+        transliteration: 'Tu bas tu hai sahaara, hai sab kuch mera.. Haath mein tere hai, saara sukh dukh mera...',
+        meaning: 'You alone are my support; you are everything to me. All my happiness and sorrow are in your hands.'
+      },
+      {
+        time: 103,
+        hindi: 'छठी मैया, सुन ली ना विनती, सुन ली विनती हमार...',
+        transliteration: 'Chhathi Maiya, sun li na vinati, sun li vinati hamaar...',
+        meaning: 'O Mother Chhathi, please hear my humble prayer and accept my heartfelt plea.'
+      }
+    ]
+
+  },
+
+  {
     id: 'kanch-ke-bans',
     title: 'Kaanch Hi Baans Ke Bahangiya',
     hindiTitle: 'काँच ही बाँस के बहंगिया बहँगी लचकत जाये',
@@ -810,7 +867,7 @@ export const CHHATH_SONGS: Song[] = [
   // ============================================================
   // MORNING / USHA ARGHYA 
   // ============================================================
-   {
+  {
     id: 'kewal-k-path-pr',
     title: 'Kelwa Ke Paat Par Ugalen Suraj Mal',
     hindiTitle: 'केलवा के पात पर उगेलन सूरज मल',
