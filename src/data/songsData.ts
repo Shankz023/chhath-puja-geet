@@ -432,7 +432,7 @@ export const CHHATH_SONGS: Song[] = [
     durationSec: 210,
     youtubeId: 'FCRb4kjnRx4',
     youtubeUrl: 'https://www.youtube.com/watch?v=FCRb4kjnRx4',
-    coverImage: soopOfferingImg,
+    coverImage: vvaanImg,
     morningBackground: vvaanImg,
     eveningBackground: vvaanImg,
     tag: 'Evening Arghya',
