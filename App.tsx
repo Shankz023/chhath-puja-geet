@@ -47,7 +47,7 @@ export const App: React.FC = () => {
   const [showArghyaModal, setShowArghyaModal] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
-  // Filter songs based on current mode or show corresponding category
+  // Filter songs based on current mode
   const targetTag = mode === 'morning' ? 'Morning Arghya' : mode === 'evening' ? 'Evening Arghya' : 'Kharna';
   const filteredSongs = CHHATH_SONGS.filter(song => song.tag === targetTag);
 
@@ -121,7 +121,7 @@ export const App: React.FC = () => {
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
-    const headerOffset = 90;
+    const headerOffset = 80;
     const element = document.getElementById(id);
     if (element) {
       const elementPosition = element.getBoundingClientRect().top;
@@ -152,27 +152,32 @@ export const App: React.FC = () => {
       {/* ========================================================================= */}
       {/* TOP NAVIGATION BAR                                                        */}
       {/* ========================================================================= */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-3 md:px-8 py-3 bg-black/60 backdrop-blur-2xl border-b border-amber-500/20 shadow-2xl">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 md:gap-4">
+      <header className="fixed top-0 left-0 right-0 z-50 px-2 sm:px-4 md:px-8 py-2.5 bg-black/75 backdrop-blur-2xl border-b border-amber-500/25 shadow-2xl">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-1.5 sm:gap-3">
           
-          {/* Brand Logo & Title */}
-          <div 
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-3 cursor-pointer group select-none shrink-0"
-          >
-            <div className="w-10 h-10 md:w-11 md:h-11 rounded-2xl bg-gradient-to-tr from-amber-400 via-orange-500 to-amber-600 flex items-center justify-center text-stone-950 shadow-lg shadow-amber-500/30 group-hover:scale-105 transition-transform">
-              <Sun className="w-6 h-6 animate-spin text-stone-950" style={{ animationDuration: '24s' }} />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-bold text-base md:text-xl text-amber-100 font-devanagari tracking-tight group-hover:text-amber-300 transition-colors">
-                  छठ पूजा गीत
-                </span>
-                <span className="text-[10px] uppercase font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30 hidden sm:inline">
-                  पावन पर्व
-                </span>
-              </div>
-              <span className="hidden sm:block text-[9px] md:text-[10px] font-cinzel text-amber-300/80 tracking-widest uppercase font-semibold">
+          {/* Brand Logo & Title (Clicking the spinning Sun opens mobile nav on mobile, scrolls top on desktop) */}
+          <div className="flex items-center gap-2 sm:gap-3 select-none shrink-0">
+            <button
+              onClick={() => {
+                if (window.innerWidth < 1024) {
+                  setMobileMenuOpen(!mobileMenuOpen);
+                } else {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              title="मेनू खोलें (Open Menu)"
+              className="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-2xl bg-gradient-to-tr from-amber-400 via-orange-500 to-amber-600 flex items-center justify-center text-stone-950 shadow-lg shadow-amber-500/30 hover:scale-105 active:scale-95 transition-transform shrink-0 cursor-pointer border-none"
+            >
+              <Sun className="w-5 h-5 sm:w-6 sm:h-6 animate-spin text-stone-950" style={{ animationDuration: '24s' }} />
+            </button>
+            <div 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex flex-col cursor-pointer"
+            >
+              <span className="font-bold text-sm sm:text-base md:text-xl text-amber-100 font-devanagari tracking-tight hover:text-amber-300 transition-colors leading-none">
+                छठ पूजा गीत
+              </span>
+              <span className="hidden sm:block text-[9px] md:text-[10px] font-cinzel text-amber-300/80 tracking-widest uppercase font-semibold mt-0.5">
                 Sacred Chhath Puja Geet
               </span>
             </div>
@@ -213,36 +218,59 @@ export const App: React.FC = () => {
             {/* Virtual Arghya Button */}
             <button
               onClick={() => setShowArghyaModal(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-stone-950 text-xs font-bold uppercase tracking-wider shadow-lg shadow-amber-500/30 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-stone-950 text-xs font-bold uppercase tracking-wider shadow-lg shadow-amber-500/30 transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
             >
               <Flame className="w-4 h-4 fill-stone-950 animate-flame" />
               <span>अर्घ्य दर्शन</span>
             </button>
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-xl bg-white/10 text-amber-300 hover:bg-white/20 transition-colors cursor-pointer"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {/* Mobile Right Action Area: Direct Arghya Button (Hamburger icon hidden in mobile mode as Sun icon toggles the menu) */}
+          <div className="flex lg:hidden items-center gap-1.5 shrink-0">
+            {/* Mobile Arghya Icon Button */}
+            <button
+              onClick={() => setShowArghyaModal(true)}
+              className="p-2 sm:px-3 sm:py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-stone-950 font-bold text-xs flex items-center gap-1 shadow-md cursor-pointer"
+              title="अर्घ्य दर्शन (Virtual Arghya)"
+            >
+              <Flame className="w-4 h-4 fill-stone-950 animate-flame" />
+              <span className="text-[11px] font-devanagari">अर्घ्य</span>
+            </button>
+          </div>
+
         </div>
       </header>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer Menu Modal */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl pt-24 px-6 pb-12 flex flex-col justify-between lg:hidden animate-in fade-in duration-200">
-          <div className="space-y-6">
-            <div className="pb-4 border-b border-amber-500/20">
-              <span className="text-xs text-amber-400 font-cinzel uppercase tracking-widest font-bold">पवित्र वातावरण ध्वनियां</span>
-              <div className="mt-3">
-                <AudioAtmosphere mode={mode} />
-              </div>
+        <div 
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-3xl pt-20 px-5 pb-8 flex flex-col justify-between lg:hidden overflow-y-auto animate-in fade-in duration-200"
+        >
+          {/* Top Bar inside Menu */}
+          <div className="flex items-center justify-between pb-4 border-b border-amber-500/20">
+            <div className="flex items-center gap-2">
+              <Sun className="w-5 h-5 text-amber-400 animate-spin" style={{ animationDuration: '20s' }} />
+              <span className="font-bold text-lg font-devanagari text-amber-100">छठ महापर्व मेनू</span>
+            </div>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 rounded-full bg-white/10 text-stone-300 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="space-y-6 my-4">
+            {/* Sacred Atmosphere Sounds Section */}
+            <div className="p-4 rounded-2xl glass-card border border-amber-500/30">
+              <span className="text-xs text-amber-300 font-cinzel uppercase tracking-widest font-bold block mb-3">
+                पवित्र वातावरण ध्वनियां (Sacred Atmosphere)
+              </span>
+              <AudioAtmosphere mode={mode} />
             </div>
 
-            <div className="space-y-3">
+            {/* Navigation Anchors */}
+            <div className="space-y-2.5">
               {[
                 { id: 'section-songs', label: `गीत संग्रह (${filteredSongs.length} भजन)` },
                 { id: 'section-lyrics', label: 'गीत के बोल (Lyrics & Meanings)' },
@@ -251,7 +279,7 @@ export const App: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="w-full text-left py-3.5 px-4 rounded-2xl glass-card text-base font-bold text-amber-100 flex items-center justify-between"
+                  className="w-full text-left py-3.5 px-4 rounded-2xl glass-card text-sm sm:text-base font-bold text-amber-100 flex items-center justify-between hover:border-amber-400/50"
                 >
                   <span className="font-devanagari">{item.label}</span>
                   <ChevronRight className="w-4 h-4 text-amber-400" />
@@ -259,19 +287,20 @@ export const App: React.FC = () => {
               ))}
             </div>
 
+            {/* Arghya CTA inside mobile drawer */}
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 setShowArghyaModal(true);
               }}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 text-stone-950 font-bold uppercase tracking-widest text-sm shadow-xl flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 text-stone-950 font-bold uppercase tracking-widest text-sm shadow-xl flex items-center justify-center gap-2 cursor-pointer"
             >
               <Flame className="w-5 h-5 fill-stone-950 animate-flame" />
               <span>अर्घ्य अर्पण करें (Virtual Arghya)</span>
             </button>
           </div>
 
-          <div className="text-center text-xs text-amber-200/70 font-devanagari">
+          <div className="text-center text-xs text-amber-200/70 font-devanagari pt-3 border-t border-white/10">
             जय छठी मईया | ॐ सूर्याय नमः 🙏
           </div>
         </div>

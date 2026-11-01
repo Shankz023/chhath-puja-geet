@@ -47,7 +47,7 @@ export const MorningEveningToggle: React.FC<MorningEveningToggleProps> = ({ mode
   ];
 
   return (
-    <div className="relative inline-flex items-center p-1 md:p-1.5 rounded-full bg-black/60 backdrop-blur-2xl border border-amber-500/30 shadow-2xl">
+    <div className="relative inline-flex items-center p-0.5 sm:p-1 md:p-1.5 rounded-full bg-black/60 backdrop-blur-2xl border border-amber-500/30 shadow-2xl shrink-0">
       {options.map((opt) => {
         const Icon = opt.icon;
         const isActive = mode === opt.id;
@@ -57,7 +57,7 @@ export const MorningEveningToggle: React.FC<MorningEveningToggleProps> = ({ mode
             id={`btn-mode-${opt.id}`}
             onClick={() => onToggle(opt.id)}
             title={opt.tooltip}
-            className={`relative flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-300 cursor-pointer border ${
+            className={`relative flex items-center gap-1 sm:gap-1.5 md:gap-2 px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-300 cursor-pointer border ${
               isActive
                 ? `${opt.activeClass} scale-100 z-10`
                 : 'border-transparent text-amber-200/70 hover:text-amber-100 hover:bg-white/[0.06]'
@@ -65,10 +65,10 @@ export const MorningEveningToggle: React.FC<MorningEveningToggleProps> = ({ mode
           >
             <Icon className={`w-3.5 h-3.5 md:w-4 md:h-4 shrink-0 transition-transform ${isActive ? `${opt.activeIconClass} scale-110` : opt.inactiveIconClass}`} />
             <div className="flex flex-col text-left leading-none">
-              <span className={`font-devanagari text-xs md:text-sm font-bold ${isActive ? '' : 'text-stone-200'}`}>
+              <span className={`font-devanagari text-[11px] sm:text-xs md:text-sm font-bold ${isActive ? '' : 'text-stone-200'}`}>
                 {opt.label}
               </span>
-              <span className={`text-[9px] uppercase tracking-wider font-cinzel opacity-75 hidden sm:inline ${isActive ? '' : 'text-stone-400'}`}>
+              <span className={`text-[8px] sm:text-[9px] uppercase tracking-wider font-cinzel opacity-75 hidden md:inline ${isActive ? '' : 'text-stone-400'}`}>
                 {opt.sub}
               </span>
             </div>
