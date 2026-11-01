@@ -64,6 +64,85 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   const playerRef = useRef<any>(null);
   const isDraggingRef = useRef<boolean>(false);
+  const isPlayingRef = useRef<boolean>(isPlaying);
+
+  // Keep isPlayingRef in sync so callbacks/listeners have latest value
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
+
+  // Prevent background tab pauses:
+  // 1. Maintain MediaSession metadata and action handlers
+  // 2. Resume playback if browser or YouTube tries to pause when tab is in background/blurred
+  useEffect(() => {
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentSong.hindiTitle || currentSong.title,
+        artist: currentSong.singer,
+        album: 'छठ पूजा के पावन गीत (Chhath Puja Mahaparv)',
+        artwork: [
+          { src: currentSong.coverImage, sizes: '512x512', type: 'image/jpeg' }
+        ]
+      });
+
+      navigator.mediaSession.setActionHandler('play', () => {
+        setIsPlaying(true);
+        if (playerRef.current?.playVideo) {
+          playerRef.current.playVideo();
+        }
+      });
+
+      navigator.mediaSession.setActionHandler('pause', () => {
+        setIsPlaying(false);
+        if (playerRef.current?.pauseVideo) {
+          playerRef.current.pauseVideo();
+        }
+      });
+
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        onPrevSong();
+      });
+
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        onNextSong();
+      });
+    }
+  }, [currentSong, onNextSong, onPrevSong, setIsPlaying]);
+
+  // Synchronize mediaSession playbackState
+  useEffect(() => {
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+    }
+  }, [isPlaying]);
+
+  // Keep alive when moving away from browser window / switching tabs
+  useEffect(() => {
+    const handleVisibilityAndFocus = () => {
+      // If user is supposed to be playing, make sure YouTube player continues playing
+      if (isPlayingRef.current && playerRef.current && playerRef.current.playVideo) {
+        try {
+          const state = playerRef.current.getPlayerState ? playerRef.current.getPlayerState() : -1;
+          // If paused (2) or cued (5) or unstarted (-1), resume immediately
+          if (state === 2 || state === 5 || state === -1) {
+            playerRef.current.playVideo();
+          }
+        } catch (e) {
+          console.debug('Resume on visibility change error:', e);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityAndFocus);
+    window.addEventListener('blur', handleVisibilityAndFocus);
+    window.addEventListener('focus', handleVisibilityAndFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityAndFocus);
+      window.removeEventListener('blur', handleVisibilityAndFocus);
+      window.removeEventListener('focus', handleVisibilityAndFocus);
+    };
+  }, []);
 
   // Initialize YouTube Iframe Player API
   useEffect(() => {
@@ -74,8 +153,8 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
             playerRef.current.destroy();
           }
           playerRef.current = new window.YT.Player('youtube-audio-player-element', {
-            height: '10',
-            width: '10',
+            height: '240',
+            width: '240',
             videoId: currentSong.youtubeId,
             playerVars: {
               autoplay: isPlaying ? 1 : 0,
@@ -115,7 +194,16 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
                     setDuration(trackDur);
                   }
                 } else if (event.data === 2) { // PAUSED
-                  // Keep state synced
+                  // If user intended to be playing, resume immediately (handles browser throttling pauses)
+                  if (isPlayingRef.current) {
+                    setTimeout(() => {
+                      if (isPlayingRef.current && playerRef.current?.playVideo) {
+                        try {
+                          playerRef.current.playVideo();
+                        } catch (e) {}
+                      }
+                    }, 100);
+                  }
                 }
               },
             },
@@ -303,8 +391,12 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   return (
     <>
-      {/* Invisible Single YouTube Audio Engine (Zero Video UI, Pure Audio) */}
-      <div className="fixed -bottom-96 -right-96 w-10 h-10 opacity-0 pointer-events-none" aria-hidden="true">
+      {/* Single YouTube Audio Engine (Positioned off-screen with compliant 240x240 dimensions) */}
+      <div 
+        className="fixed -left-[9999px] -top-[9999px] w-[240px] h-[240px] pointer-events-none overflow-hidden" 
+        style={{ opacity: 0.01 }}
+        aria-hidden="true"
+      >
         <div id="youtube-audio-player-element" />
       </div>
 

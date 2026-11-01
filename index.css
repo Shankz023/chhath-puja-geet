@@ -1,17 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700;800&family=Rozha+One&family=Yatra+One&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+/* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 9999px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(245, 158, 11, 0.4);
+  background: linear-gradient(to bottom, rgba(245, 158, 11, 0.5), rgba(234, 88, 12, 0.6));
   border-radius: 9999px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(245, 158, 11, 0.7);
+  background: linear-gradient(to bottom, rgba(245, 158, 11, 0.8), rgba(234, 88, 12, 0.9));
 }
+
 html {
   scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #080302;
+  color: #fff;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+  background: rgba(18, 9, 6, 0.58);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+}
+
+.glass-panel-glow {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(18, 9, 6, 0.72) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(245, 158, 11, 0.32);
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.7), 0 0 24px -6px rgba(245, 158, 11, 0.15);
+}
+
+.glass-card {
+  background: rgba(15, 7, 4, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  background: rgba(26, 12, 7, 0.75);
+  border-color: rgba(245, 158, 11, 0.45);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px -4px rgba(245, 158, 11, 0.22);
+}
+
+/* Subtle Shimmer effect on borders and highlights */
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 25%, #fde68a 50%, #f59e0b 80%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.divine-border {
+  border-image: linear-gradient(to right, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.6), rgba(245, 158, 11, 0.1)) 1;
+}
+
+/* Ambient glow pulses */
+@keyframes ambientGlowPulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(1.08);
+  }
+}
+
+.animate-glow-pulse {
+  animation: ambientGlowPulse 6s ease-in-out infinite;
+}
+
+/* Floating Diya Flame Flicker */
+@keyframes flameFlicker {
+  0%, 100% {
+    transform: scale(1) rotate(-1deg);
+    filter: drop-shadow(0 0 10px #f59e0b) drop-shadow(0 0 20px #ea580c);
+  }
+  25% {
+    transform: scale(1.06, 0.96) rotate(2deg);
+    filter: drop-shadow(0 0 14px #fbbf24) drop-shadow(0 0 26px #f97316);
+  }
+  50% {
+    transform: scale(0.97, 1.05) rotate(-2deg);
+    filter: drop-shadow(0 0 8px #f59e0b) drop-shadow(0 0 18px #c2410c);
+  }
+  75% {
+    transform: scale(1.03, 1.02) rotate(1deg);
+    filter: drop-shadow(0 0 12px #fde047) drop-shadow(0 0 24px #ea580c);
+  }
+}
+
+.animate-flame {
+  animation: flameFlicker 2.2s infinite ease-in-out;
+  transform-origin: bottom center;
 }

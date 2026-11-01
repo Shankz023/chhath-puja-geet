@@ -11,11 +11,11 @@ import {
   ChevronRight,
   Sparkles,
   Sun,
-  Music,
   Flame,
-  ExternalLink,
   Volume2,
-  Heart
+  Heart,
+  Radio,
+  Share2
 } from 'lucide-react';
 import { Song, ThemeMode } from '../types';
 
@@ -39,154 +39,158 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
   mode,
 }) => {
   return (
-    <div className="relative w-full min-h-[80vh] flex flex-col justify-center items-center px-4 md:px-8 pt-24 pb-16 z-20 p-10">
+    <div className="relative w-full min-h-[75vh] flex flex-col justify-center items-center px-4 md:px-8 pt-28 pb-12 z-20">
+      
       {/* Devotional Subtitle Badge */}
-      <div className="bann inline-flex items-center gap-2 px-4 mt-10 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300 text-xs md:text-sm font-semibold uppercase tracking-widest backdrop-blur-md shadow-lg shadow-amber-500/10 mb-6" sx={{ padding: '100px 50px' }}>
-        <Sun className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: '24s' }} />
-        <span>आस्था, पवित्रता व सूर्य उपासना का महापर्व</span>
+      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 via-orange-500/20 to-amber-500/15 border border-amber-400/40 text-amber-200 text-xs md:text-sm font-semibold tracking-wider backdrop-blur-xl shadow-lg shadow-amber-500/10 mb-4 animate-glow-pulse">
+        <Sun className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: '28s' }} />
+        <span className="font-devanagari">आस्था, पवित्रता व सूर्य उपासना का महापर्व</span>
         <Sparkles className="w-3.5 h-3.5 text-amber-300" />
       </div>
 
-      {/* Main Big Title */}
-      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-devanagari text-center tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-200 to-orange-400 drop-shadow-[0_4px_24px_rgba(245,158,11,0.4)]">
-        छठ पूजा गीत
-      </h1>
-      <p className="text-sm sm:text-lg md:text-xl font-cinzel text-amber-200/90 tracking-[0.25em] uppercase font-semibold text-center mt-3 drop-shadow">
-        SACRED CHHATH PUJA GEET & DEVOTIONAL MELODIES
-      </p>
+      {/* Main Devotional Title with Layered Glow */}
+      <div className="relative text-center max-w-4xl">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black font-devanagari tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-200 to-orange-400 drop-shadow-[0_4px_30px_rgba(245,158,11,0.45)]">
+          छठ पूजा गीत
+        </h1>
+        <p className="text-xs sm:text-base md:text-lg font-cinzel text-amber-200/90 tracking-[0.3em] uppercase font-semibold text-center mt-3 drop-shadow">
+          Sacred Chhath Puja Geet & Devotional Melodies
+        </p>
+      </div>
 
-      {/* Featured Cinematic Audio Player Card (Pure Audio & Artwork, No Video Frame) */}
-      <div className="w-full max-w-4xl mt-6 md:mt-12 bg-black/40 border border-amber-500/40 rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl relative overflow-hidden group">
-        {/* Glow ambient background */}
-        <div className="absolute -top-24 -right-24 w-48 h-48 md:w-72 md:h-72 rounded-full bg-gradient-to-br from-amber-500/20 via-orange-600/10 to-transparent blur-3xl pointer-events-none" />
+      {/* Featured Audiophile Player Glass Card */}
+      <div className="w-full max-w-4xl mt-8 md:mt-10 glass-panel-glow rounded-3xl p-5 sm:p-7 md:p-8 relative overflow-hidden group">
+        
+        {/* Glow ambient radial backgrounds */}
+        <div className="absolute -top-24 -right-24 w-60 h-60 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-amber-500/25 via-orange-600/15 to-transparent blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-60 h-60 md:w-80 md:h-80 rounded-full bg-gradient-to-tr from-rose-600/20 via-amber-600/15 to-transparent blur-3xl pointer-events-none" />
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-center relative z-10">
 
-          {/* Song Cover Artwork with Dynamic Audio Equalizer Halo */}
+          {/* Song Cover Artwork with Radiant Glass Frame */}
           <div className="md:col-span-5 relative flex justify-center">
             <div
               onClick={onTogglePlay}
-              className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-64 md:h-64 rounded-2xl md:rounded-3xl overflow-hidden border-2 border-amber-400/60 shadow-2xl shadow-amber-950/80 group cursor-pointer"
+              className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-3xl overflow-hidden border-2 border-amber-400/50 shadow-2xl shadow-black/80 group/cover cursor-pointer"
             >
               <img
                 src={currentSong.coverImage}
                 alt={currentSong.title}
                 referrerPolicy="no-referrer"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover group-hover/cover:scale-108 transition-transform duration-700 ease-out"
               />
 
-              {/* Play / Pause button overlay on cover */}
-              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors flex items-center justify-center">
-                <div className={`w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 text-stone-950 flex items-center justify-center shadow-2xl transition-transform transform group-hover:scale-110 ${isPlaying ? 'ring-4 ring-amber-300 animate-pulse' : ''
-                  }`}>
+              {/* Glowing Overlay on Hover / Active */}
+              <div className={`absolute inset-0 transition-colors flex items-center justify-center ${
+                isPlaying ? 'bg-black/35 backdrop-blur-[1px]' : 'bg-black/40 group-hover/cover:bg-black/55'
+              }`}>
+                <div className={`w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-tr from-amber-400 via-amber-500 to-orange-500 text-stone-950 flex items-center justify-center shadow-2xl shadow-amber-500/40 transition-transform transform group-hover/cover:scale-110 ${
+                  isPlaying ? 'ring-4 ring-amber-300/80 animate-pulse' : ''
+                }`}>
                   {isPlaying ? (
-                    <Pause className="w-6 h-6 md:w-8 md:h-8 fill-stone-950" />
+                    <Pause className="w-7 h-7 fill-stone-950" />
                   ) : (
-                    <Play className="w-6 h-6 md:w-8 md:h-8 fill-stone-950 translate-x-0.5" />
+                    <Play className="w-7 h-7 fill-stone-950 translate-x-0.5" />
                   )}
                 </div>
               </div>
 
               {/* Tag & Duration Badge */}
-              <div className="absolute bottom-0 left-0 right-0 p-2 md:p-3 bg-gradient-to-t from-black/90 to-transparent flex items-center justify-between">
-                <span className="text-[7px] md:text-[11px] font-bold uppercase tracking-widest px-2 py-0.5 md:px-3 md:py-1 rounded-full bg-amber-500 text-stone-950 shadow-md">
+              <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex items-center justify-between">
+                <span className="text-[10px] md:text-[11px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-amber-500 text-stone-950 shadow-md font-cinzel">
                   {currentSong.tag}
                 </span>
-                <span className="text-[10px] md:text-xs font-mono text-amber-200">
+                <span className="text-xs font-mono font-bold text-amber-200">
                   {currentSong.duration}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Song Details & In-Banner Fast Next/Prev Nav */}
-          <div className="md:col-span-7 flex flex-col justify-between space-y-2 md:space-y-4 text-center md:text-left">
+          {/* Song Meta, Singer, Controls & Ritual Action */}
+          <div className="md:col-span-7 flex flex-col justify-between space-y-4 md:space-y-5 text-center md:text-left">
+            
             <div>
-              <div className="flex items-center justify-center md:justify-start gap-2">
-                <span className="text-[10px] md:text-xs font-mono text-amber-400 font-semibold tracking-wider uppercase">
-                  {currentSong.ragaOrMood}
+              <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] uppercase font-bold tracking-widest border border-amber-400/30">
+                  <Radio className="w-3 h-3 text-amber-400 animate-pulse" />
+                  {currentSong.ragaOrMood || 'भक्ति भाव (Bhakti Bhava)'}
                 </span>
-                {isPlaying && (
-                  <span className="inline-flex items-center gap-1 text-[9px] md:text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                    बज रहा है (Playing)
-                  </span>
-                )}
+                <span className="text-xs text-amber-200/60 font-cinzel hidden sm:inline">•</span>
+                <span className="text-xs text-amber-200/70 font-cinzel hidden sm:inline tracking-wider">
+                  {currentSong.tag}
+                </span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-devanagari text-amber-100 mt-0.5 md:mt-1 leading-tight md:leading-snug">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-devanagari text-amber-100 group-hover:text-amber-200 transition-colors drop-shadow leading-tight">
                 {currentSong.hindiTitle}
               </h2>
-              <p className="text-xs md:text-base text-amber-200/80 font-cinzel font-semibold mt-0.5 md:mt-1">
+              <p className="text-sm md:text-base font-cinzel text-amber-300 font-semibold mt-1">
                 {currentSong.title}
               </p>
-              <p className="text-xs md:text-sm text-stone-300 font-medium mt-0.5 md:mt-1">
-                स्वर: <span className="text-amber-300 font-bold">{currentSong.singer}</span>
-              </p>
-              <p className="text-xs md:text-sm text-stone-300/80 leading-relaxed mt-1.5 md:mt-3 line-clamp-2 md:line-clamp-3">
-                {currentSong.description}
+              <p className="text-xs md:text-sm text-stone-300/90 font-medium mt-1">
+                स्वर: <span className="text-amber-100 font-semibold">{currentSong.singer}</span>
               </p>
             </div>
 
-            {/* Quick Actions & Traversing Navigation */}
-            <div className="pt-3 md:pt-4 border-t border-amber-500/20 flex flex-wrap items-center justify-center md:justify-start gap-2 md:gap-3">
-              {/* Main Play CTA */}
+            <p className="text-xs md:text-sm text-stone-300/80 leading-relaxed font-devanagari line-clamp-2 md:line-clamp-3">
+              {currentSong.description}
+            </p>
+
+            {/* Quick Interactive Actions Row */}
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
+              
+              {/* Main Play / Pause Button */}
               <button
-                id="btn-hero-play"
                 onClick={onTogglePlay}
-                className="flex items-center gap-1.5 md:gap-2 px-3.5 py-2 md:px-5 md:py-2.5 rounded-xl md:rounded-2xl bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-300 hover:to-orange-300 text-stone-950 font-bold text-[11px] md:text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
+                className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-stone-950 font-bold text-xs uppercase tracking-widest shadow-xl shadow-amber-500/25 transition-all hover:scale-105 active:scale-95 cursor-pointer"
               >
-                {isPlaying ? <Pause className="w-3.5 h-3.5 md:w-4 md:h-4 fill-stone-950" /> : <Play className="w-3.5 h-3.5 md:w-4 md:h-4 fill-stone-950 translate-x-0.5" />}
-                <span>{isPlaying ? 'रोकें (Pause)' : 'बजाएं (Play)'}</span>
+                {isPlaying ? (
+                  <>
+                    <Pause className="w-4 h-4 fill-stone-950" />
+                    <span>विराम (Pause)</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4 fill-stone-950" />
+                    <span>श्रवण करें (Play)</span>
+                  </>
+                )}
               </button>
 
-              {/* Back Track Button */}
-              <button
-                id="btn-hero-prev"
-                onClick={onPrev}
-                className="flex items-center gap-1 px-3 py-2 md:px-4 md:py-2.5 rounded-xl md:rounded-2xl bg-white/10 hover:bg-amber-500/20 border border-white/20 hover:border-amber-400 text-[11px] md:text-xs font-bold uppercase tracking-wider text-white transition-all active:scale-95 cursor-pointer"
-                title="Previous Song (पिछला गीत)"
-              >
-                <ChevronLeft className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                <span>पिछला</span>
-              </button>
+              {/* Prev / Next Track traversing */}
+              <div className="flex items-center gap-1.5 bg-black/50 border border-white/10 rounded-full p-1">
+                <button
+                  onClick={onPrev}
+                  className="p-2 rounded-full hover:bg-white/10 text-stone-300 hover:text-amber-200 transition-colors cursor-pointer"
+                  title="पिछला गीत (Previous Song)"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={onNext}
+                  className="p-2 rounded-full hover:bg-white/10 text-stone-300 hover:text-amber-200 transition-colors cursor-pointer"
+                  title="अगला गीत (Next Song)"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
 
-              {/* Next Track Button */}
+              {/* Virtual Arghya Offering CTA Button */}
               <button
-                id="btn-hero-next"
-                onClick={onNext}
-                className="flex items-center gap-1 px-3 py-2 md:px-4 md:py-2.5 rounded-xl md:rounded-2xl bg-amber-500/30 hover:bg-amber-500/50 border border-amber-400 text-[11px] md:text-xs font-bold uppercase tracking-wider text-amber-200 transition-all active:scale-95 cursor-pointer shadow-lg shadow-amber-500/20"
-                title="Next Song (अगला गीत)"
-              >
-                <span>अगला</span>
-                <ChevronRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
-              </button>
-
-              {/* Direct YouTube Link */}
-              <a
-                href={currentSong.youtubeUrl || `https://www.youtube.com/watch?v=${currentSong.youtubeId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 px-3 py-2 md:px-3.5 md:py-2.5 rounded-xl md:rounded-2xl bg-red-950/50 hover:bg-red-900/60 border border-red-500/40 text-[11px] md:text-xs font-bold text-red-300 hover:text-red-200 transition-all cursor-pointer"
-                title="Open on YouTube"
-              >
-                <ExternalLink className="w-3 h-3 md:w-3.5 md:h-3.5" />
-                <span>YouTube</span>
-              </a>
-
-              {/* Virtual Arghya CTA */}
-              <button
-                id="btn-hero-arghya"
                 onClick={onOpenArghya}
-                className="flex items-center gap-1.5 px-3 py-2 md:px-4 md:py-2.5 rounded-xl md:rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-[11px] md:text-xs uppercase tracking-widest shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-orange-600/30 to-amber-600/30 hover:from-orange-600/50 hover:to-amber-600/50 border border-amber-400/50 text-amber-200 hover:text-white font-bold text-xs uppercase tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg"
               >
-                <Flame className="w-3.5 h-3.5 md:w-4 md:h-4 fill-amber-200 text-amber-200" />
-                <span>अर्घ्य</span>
+                <Flame className="w-4 h-4 text-amber-400 animate-flame" />
+                <span>अर्घ्य अर्पण (Virtual Arghya)</span>
               </button>
             </div>
+
           </div>
+
         </div>
       </div>
+
     </div>
   );
 };

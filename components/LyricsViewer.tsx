@@ -4,7 +4,7 @@
 */
 
 import React, { useState } from 'react';
-import { BookOpen, Copy, Check, Sparkles, Volume2, Globe } from 'lucide-react';
+import { BookOpen, Copy, Check, Sparkles, Volume2, Globe, Music } from 'lucide-react';
 import { Song, LyricLine } from '../types';
 
 interface LyricsViewerProps {
@@ -13,7 +13,7 @@ interface LyricsViewerProps {
 }
 
 export const LyricsViewer: React.FC<LyricsViewerProps> = ({ song, currentTime = 0 }) => {
-  const [viewMode, setViewMode] = useState<'hindi' | 'bilingual' | 'english'>('bilingual');
+  const [viewMode, setViewMode] = useState<'bilingual' | 'hindi' | 'english'>('bilingual');
   const [copied, setCopied] = useState(false);
   const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
 
@@ -27,43 +27,55 @@ export const LyricsViewer: React.FC<LyricsViewerProps> = ({ song, currentTime = 
   };
 
   return (
-    <div className="w-full bg-black/40 border border-amber-500/30 rounded-3xl p-6 md:p-8 backdrop-blur-xl text-white">
+    <div className="w-full glass-panel-glow rounded-3xl p-6 sm:p-8 backdrop-blur-2xl text-white shadow-2xl relative overflow-hidden">
+      
+      {/* Top subtle glow */}
+      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
+
       {/* Header with Title and Control Toggles */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-amber-500/20">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-amber-500/20 relative z-10">
         <div>
-          <div className="flex items-center gap-2 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-1">
-            <BookOpen className="w-4 h-4" />
-            <span>गीत के बोल व भावार्थ (Lyrics & Meaning)</span>
+          <div className="inline-flex items-center gap-2 text-amber-300 text-xs font-semibold uppercase tracking-wider mb-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-400/20">
+            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+            <span className="font-devanagari">गीत के पावन बोल व भावार्थ</span>
           </div>
-          <h3 className="text-xl md:text-2xl font-bold text-amber-100 font-devanagari">
+          <h3 className="text-2xl md:text-3xl font-black text-amber-100 font-devanagari mt-1 drop-shadow">
             {song.hindiTitle}
           </h3>
-          <p className="text-xs text-amber-200/70 font-cinzel">{song.title} • {song.singer}</p>
+          <p className="text-xs md:text-sm text-amber-200/80 font-cinzel tracking-wider">
+            {song.title} • स्वर: <span className="text-amber-100 font-semibold">{song.singer}</span>
+          </p>
         </div>
 
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2.5 flex-wrap">
           {/* Mode Switcher */}
-          <div className="bg-black/60 p-1 rounded-xl border border-white/10 flex text-xs">
+          <div className="bg-black/60 p-1 rounded-2xl border border-white/10 flex text-xs backdrop-blur-md">
             <button
               onClick={() => setViewMode('bilingual')}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
-                viewMode === 'bilingual' ? 'bg-amber-500/30 text-amber-300' : 'text-white/60 hover:text-white'
+              className={`px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer ${
+                viewMode === 'bilingual'
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-stone-950 font-bold shadow-md'
+                  : 'text-stone-300 hover:text-white'
               }`}
             >
               दोनों (Dual)
             </button>
             <button
               onClick={() => setViewMode('hindi')}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
-                viewMode === 'hindi' ? 'bg-amber-500/30 text-amber-300' : 'text-white/60 hover:text-white'
+              className={`px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer ${
+                viewMode === 'hindi'
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-stone-950 font-bold shadow-md'
+                  : 'text-stone-300 hover:text-white'
               }`}
             >
               हिन्दी (Hindi)
             </button>
             <button
               onClick={() => setViewMode('english')}
-              className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
-                viewMode === 'english' ? 'bg-amber-500/30 text-amber-300' : 'text-white/60 hover:text-white'
+              className={`px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer ${
+                viewMode === 'english'
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-stone-950 font-bold shadow-md'
+                  : 'text-stone-300 hover:text-white'
               }`}
             >
               English
@@ -73,25 +85,25 @@ export const LyricsViewer: React.FC<LyricsViewerProps> = ({ song, currentTime = 
           {/* Copy Button */}
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-black/60 hover:bg-black/80 border border-white/10 hover:border-amber-400/40 rounded-xl text-xs text-amber-200/90 transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-black/60 hover:bg-black/80 border border-white/10 hover:border-amber-400/50 rounded-2xl text-xs text-amber-200/90 transition-all cursor-pointer shadow-md"
             title="Copy Lyrics"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copied ? 'Copied' : 'Copy'}</span>
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-amber-300" />}
+            <span className="font-medium">{copied ? 'कॉपी हुआ!' : 'कॉपी करें'}</span>
           </button>
         </div>
       </div>
 
       {/* Lyrics Stanzas Container */}
-      <div className="mt-6 space-y-6 max-h-[380px] overflow-y-auto pr-2 custom-scrollbar">
+      <div className="mt-6 space-y-4 max-h-[440px] overflow-y-auto pr-2 custom-scrollbar relative z-10">
         {song.lyrics.map((stanza: LyricLine, index: number) => (
           <div
             key={index}
-            className="p-4 rounded-2xl bg-white/[0.03] hover:bg-amber-500/[0.07] border border-white/5 hover:border-amber-500/30 transition-all duration-300 group"
+            className="p-4 sm:p-5 rounded-2xl bg-white/[0.02] hover:bg-amber-500/[0.06] border border-white/5 hover:border-amber-500/30 transition-all duration-300 group"
           >
             {(viewMode === 'bilingual' || viewMode === 'hindi') && (
               <p
-                className={`font-devanagari font-semibold text-amber-100 group-hover:text-amber-200 transition-colors leading-relaxed ${
+                className={`font-devanagari font-bold text-amber-100 group-hover:text-amber-200 transition-colors leading-relaxed ${
                   fontSize === 'large' ? 'text-lg md:text-xl' : 'text-base md:text-lg'
                 }`}
               >
@@ -100,15 +112,17 @@ export const LyricsViewer: React.FC<LyricsViewerProps> = ({ song, currentTime = 
             )}
 
             {(viewMode === 'bilingual' || viewMode === 'english') && (
-              <p className="text-xs md:text-sm text-amber-300/80 italic mt-1 font-sans">
+              <p className="text-xs sm:text-sm text-stone-300 font-mono tracking-wide mt-1.5 opacity-85 group-hover:opacity-100">
                 {stanza.transliteration}
               </p>
             )}
 
-            {(viewMode === 'bilingual' || viewMode === 'english') && (
-              <div className="mt-2.5 pt-2 border-t border-white/10 text-xs md:text-sm text-stone-300/90 leading-normal flex items-start gap-2">
-                <span className="text-amber-400 font-semibold text-[11px] uppercase tracking-wider font-cinzel">Meaning:</span>
-                <span>{stanza.meaning}</span>
+            {stanza.meaning && (
+              <div className="mt-2.5 pt-2 border-t border-white/5 flex items-start gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                <p className="text-xs text-amber-200/75 italic leading-relaxed font-sans">
+                  {stanza.meaning}
+                </p>
               </div>
             )}
           </div>
